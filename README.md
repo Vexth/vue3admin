@@ -1,5 +1,7 @@
 # vue3admin
 
+mock文件中的代码用的是他人的
+
 ## Project setup
 ```
 yarn install

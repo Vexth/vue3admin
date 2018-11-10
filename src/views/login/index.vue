@@ -100,8 +100,6 @@ export default class Login extends Vue {
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-// $bg:#2d3a4b;
-// $light_gray:#eee;
 $bg:#fff;
 $light_gray:#000;
 /* reset element-ui css */
@@ -135,9 +133,6 @@ $light_gray:#000;
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-// $bg:#2d3a4b;
-// $dark_gray:#889aa4;
-// $light_gray:#eee;
 $bg:#fff;
 $dark_gray:#000;
 $light_gray:#000;
@@ -157,7 +152,6 @@ $light_gray:#000;
   }
   .tips {
     font-size: 14px;
-    // color: #fff;
     margin-bottom: 10px;
     span {
       &:first-of-type {

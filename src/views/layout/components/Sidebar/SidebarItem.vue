@@ -30,7 +30,6 @@
 </template>
 
 <script lang="ts">
-// import path from 'path';
 import { Route } from 'vue-router';
 import { isExternal } from '@/utils/validate';
 import { Component, Vue, Prop } from 'vue-property-decorator';
@@ -38,8 +37,6 @@ import Item from './Item.vue';
 import AppLink from './Link.vue';
 
 @Component({
-  // Set 'name' here to prevent uglifyjs from causing recursive component not work
-  // See https://medium.com/haiiro-io/element-component-name-with-vue-class-component-f3b435656561 for detail
   name: 'SidebarItem',
   components: { Item, AppLink },
 })
@@ -56,7 +53,7 @@ export default class SidebarItem extends Vue {
       if (item.meta && item.meta.hidden) {
         return false;
       } else {
-        this.onlyOneChild = item; // This will only be used if hasOneShowingChild return true
+        this.onlyOneChild = item;
         return true;
       }
     });
@@ -64,10 +61,7 @@ export default class SidebarItem extends Vue {
   }
 
   public resolvePath(routePath: string) {
-    // if (this.isExternalLink(routePath)) {
     return routePath;
-    // }
-    // return path.resolve(this.basePath, routePath);
   }
 
   public isExternalLink(routePath: string) {

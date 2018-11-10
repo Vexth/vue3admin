@@ -91,8 +91,7 @@ export default class TagsView extends Vue {
   }
   refreshSelectedTag(view: any) {
     console.log(view);
-    // TagsModule.delCachedView(view);
-    // this.$store.dispatch('delCachedView', view).then(() => {
+    // TagsModule.delCachedView(view).then(() => {
     //   const { fullPath } = view;
     //   this.$nextTick(() => {
     //     this.$router.replace({
@@ -123,9 +122,6 @@ export default class TagsView extends Vue {
   closeOthersTags() {
     this.$router.push(this.selectedTag);
     TagsModule.delOthersViews(this.selectedTag).then(() => this.moveToCurrentTag());
-    // this.$store.dispatch('delOthersViews', this.selectedTag).then(() => {
-    //   this.moveToCurrentTag();
-    // });
   }
   closeAllTags() {
     TagsModule.delAllViews({});
