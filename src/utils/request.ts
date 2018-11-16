@@ -6,6 +6,7 @@ import { UserModule } from '@/store/modules/user';
 // 创建axios实例
 const service = axios.create({
   baseURL: process.env.VUE_APP_MOCK_API,
+  // baseURL: process.env.VUE_APP_BASE_URL,
   timeout: 5000,
 });
 
