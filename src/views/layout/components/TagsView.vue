@@ -13,11 +13,11 @@
         <span class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)"/>
       </router-link>
     </scroll-pane>
-    <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
-      <li @click="refreshSelectedTag(selectedTag)"></li>
-      <li @click="closeSelectedTag(selectedTag)"></li>
-      <li @click="closeOthersTags"></li>
-      <li @click="closeAllTags"></li>
+    <ul v-show="visible" :style="{left:left+'px', top:top+'px'}" class="contextmenu">
+      <li @click="refreshSelectedTag(selectedTag)">刷新</li>
+      <li @click="closeSelectedTag(selectedTag)">关闭</li>
+      <li @click="closeOthersTags">关闭其它</li>
+      <li @click="closeAllTags">关闭所有</li>
     </ul>
   </div>
 </template>
@@ -81,7 +81,6 @@ export default class TagsView extends Vue {
           (this.$refs.scrollPane as any).moveToTarget(tag.$el);
           // when query is different then update
           if (tag.to.fullPath !== this.$route.fullPath) {
-            // this.$store.dispatch('updateVisitedView', this.$route);
             TagsModule.updateVisitedView(this.$route);
           }
           break;
@@ -90,25 +89,48 @@ export default class TagsView extends Vue {
     });
   }
   refreshSelectedTag(view: any) {
-    console.log(view);
-    // TagsModule.delCachedView(view).then(() => {
-    //   const { fullPath } = view;
-    //   this.$nextTick(() => {
-    //     this.$router.replace({
-    //       path: '/redirect' + fullPath,
-    //     });
-    //   });
-    // });
+    Promise.resolve().then(() => TagsModule.delCachedView(view)).then(() => {
+      const { fullPath } = view;
+      this.$nextTick(() => {
+        this.$router.replace({
+          path: '/redirect' + fullPath,
+        });
+        this.visible = false;
+      });
+    });
   }
-  closeTag(view: any) {
+  delView(view: any) {
     return new Promise((resolve: any) => {
       TagsModule.delVisitedView(view);
       TagsModule.delCachedView(view);
+      this.visible = false;
       setTimeout(() => resolve(TagsModule.visitedViews), 0);
     });
   }
+  delOthersViews(view: any) {
+    return new Promise((resolve: any) => {
+      TagsModule.delOthersVisitedViews(view);
+      TagsModule.delOthersCachedViews(view);
+      this.visible = false;
+      setTimeout(() => resolve({
+        visitedViews: [...TagsModule.visitedViews],
+        cachedViews: [...TagsModule.cachedViews],
+      }), 0);
+    });
+  }
+  delAllViews(view: any) {
+    return new Promise((resolve: any) => {
+      TagsModule.delAllVisitedViews();
+      TagsModule.delAllCachedViews();
+      this.visible = false;
+      setTimeout(() => resolve({
+        visitedViews: [...TagsModule.visitedViews],
+        cachedViews: [...TagsModule.cachedViews],
+      }), 0);
+    });
+  }
   closeSelectedTag(view: any) {
-    this.closeTag(view).then((visitedViews: any) => {
+    this.delView(view).then((visitedViews: any) => {
       if (this.isActive(view)) {
         const latestView = visitedViews.slice(-1)[0];
         if (latestView) {
@@ -121,10 +143,10 @@ export default class TagsView extends Vue {
   }
   closeOthersTags() {
     this.$router.push(this.selectedTag);
-    TagsModule.delOthersViews(this.selectedTag).then(() => this.moveToCurrentTag());
+    this.delOthersViews(this.selectedTag).then(() => this.moveToCurrentTag());
   }
   closeAllTags() {
-    TagsModule.delAllViews({});
+    this.delAllViews({});
     this.$router.push('/');
   }
   openMenu(tag: any, e: any) {

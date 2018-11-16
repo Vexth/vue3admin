@@ -1,4 +1,4 @@
-import { VuexModule, Module, MutationAction, Mutation, Action, getModule } from 'vuex-module-decorators';
+import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators';
 import store from '@/store';
 
 export interface ITagsState {
@@ -95,110 +95,29 @@ class Tags extends VuexModule implements ITagsState {
   public addCachedView(view: any) {
     return view;
   }
-  // @MutationAction({mutate: ['visitedViews', 'visitedViews']})
-  // public delView(view: any) {
-  //   return new Promise((resolve: any) => {
-  //     this.delVisitedView(view);
-  //     this.delCachedView(view);
-  //     resolve({
-  //       visitedViews: [...this.visitedViews],
-  //       cachedViews: [...this.cachedViews],
-  //     });
-  //   });
-  // }
   @Action({ commit: 'DEL_VISITED_VIEW' })
   public delVisitedView(view: any) {
     return view;
   }
-  // @MutationAction({mutate: []})
-  // delVisitedView(view: any) {
-  //   return new Promise((resolve: any) => {
-  //     this.DEL_VISITED_VIEW(view);
-  //     resolve([...this.visitedViews]);
-  //   });
-  // }
   @Action({ commit: 'DEL_CACHED_VIEW' })
   public delCachedView(view: any) {
     return view;
   }
-  // @MutationAction({mutate: []})
-  // delCachedView(view: any) {
-  //   return new Promise((resolve: any) => {
-  //     this.DEL_CACHED_VIEW(view);
-  //     resolve([...this.cachedViews]);
-  //   });
-  // }
-  @MutationAction({mutate: ['visitedViews', 'visitedViews']})
-  public delOthersViews(view: any) {
-    return new Promise((resolve: any) => {
-      this.delOthersVisitedViews(view);
-      this.delOthersCachedViews(view);
-      resolve({
-        visitedViews: [...this.visitedViews],
-        cachedViews: [...this.cachedViews],
-      });
-    });
-  }
-  // @Action({ commit: 'DEL_OTHERS_VISITED_VIEWS' })
-  // public delOthersVisitedViews(view: any) {
-  //   return view;
-  // }
-  @MutationAction({mutate: []})
+  @Action({ commit: 'DEL_OTHERS_VISITED_VIEWS' })
   public delOthersVisitedViews(view: any) {
-    return new Promise((resolve: any) => {
-      this.DEL_OTHERS_VISITED_VIEWS(view);
-      // commit('DEL_OTHERS_VISITED_VIEWS', view)
-      resolve([...this.visitedViews]);
-    });
+    return view;
   }
-  // @Action({ commit: 'DEL_OTHERS_CACHED_VIEWS' })
-  // public delOthersCachedViews(view: any) {
-  //   return view;
-  // }
-  @MutationAction({mutate: []})
+  @Action({ commit: 'DEL_OTHERS_CACHED_VIEWS' })
   public delOthersCachedViews(view: any) {
-    return new Promise((resolve: any) => {
-      this.DEL_OTHERS_CACHED_VIEWS(view);
-      // commit('DEL_OTHERS_CACHED_VIEWS', view)
-      resolve([...this.visitedViews]);
-    });
+    return view;
   }
-  @MutationAction({mutate: ['visitedViews', 'visitedViews']})
-  public delAllViews(view: any) {
-    return new Promise((resolve: any) => {
-      // dispatch('delAllVisitedViews', view)
-      // dispatch('delAllCachedViews', view)
-      this.delAllVisitedViews(view);
-      this.delAllCachedViews(view);
-      resolve({
-        visitedViews: [...this.visitedViews],
-        cachedViews: [...this.cachedViews],
-      });
-    });
+  @Action({ commit: 'DEL_ALL_VISITED_VIEWS' })
+  public delAllVisitedViews() {
+    return [];
   }
-  // @Action({ commit: 'DEL_ALL_VISITED_VIEWS' })
-  // public delAllVisitedViews(view: any) {
-  //   return view;
-  // }
-  @MutationAction({mutate: []})
-  public delAllVisitedViews(view: any) {
-    return new Promise((resolve: any) => {
-      this.DEL_ALL_VISITED_VIEWS();
-      // commit('DEL_ALL_VISITED_VIEWS', view)
-      resolve([...this.visitedViews]);
-    });
-  }
-  // @Action({ commit: 'DEL_ALL_CACHED_VIEWS' })
-  // public delAllCachedViews(view: any) {
-  //   return view;
-  // }
-  @MutationAction({mutate: []})
-  public delAllCachedViews(view: any) {
-    return new Promise((resolve: any) => {
-      this.DEL_ALL_CACHED_VIEWS();
-      // commit('DEL_ALL_CACHED_VIEWS', view)
-      resolve([...this.visitedViews]);
-    });
+  @Action({ commit: 'DEL_ALL_CACHED_VIEWS' })
+  public delAllCachedViews() {
+    return [];
   }
   @Action({ commit: 'UPDATE_VISITED_VIEW' })
   public updateVisitedView(view: any) {
