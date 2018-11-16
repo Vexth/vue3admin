@@ -9,8 +9,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { Component, Vue } from 'vue-property-decorator';
 import { TagsModule } from '@/store/modules/tags';
+@Component
 export default class AppMain extends Vue {
   get cachedViews() {
     return TagsModule.cachedViews;
@@ -21,10 +22,10 @@ export default class AppMain extends Vue {
 }
 </script>
 
-<style scoped>
+<style rel="stylesheet/scss" lang="scss" scoped>
 .app-main {
   /* 50 = navbar */
-  min-height: calc(100vh - 50px);
+  min-height: calc(100vh - 84px);
   position: relative;
   overflow: hidden;
 }
