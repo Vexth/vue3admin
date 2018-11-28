@@ -88,65 +88,41 @@ export default class TagsView extends Vue {
       }
     });
   }
-  refreshSelectedTag(view: any) {
-    Promise.resolve().then(() => TagsModule.delCachedView(view)).then(() => {
-      const { fullPath } = view;
-      this.$nextTick(() => {
-        this.$router.replace({
-          path: '/redirect' + fullPath,
-        });
-        this.visible = false;
+  async refreshSelectedTag(view: any) {
+    await TagsModule.delCachedView(view);
+    const { fullPath } = view;
+    await this.$nextTick(() => {
+      this.$router.replace({
+        path: '/redirect' + fullPath,
       });
-    });
-  }
-  delView(view: any) {
-    return new Promise((resolve: any) => {
-      TagsModule.delVisitedView(view);
-      TagsModule.delCachedView(view);
       this.visible = false;
-      setTimeout(() => resolve(TagsModule.visitedViews), 0);
     });
   }
-  delOthersViews(view: any) {
-    return new Promise((resolve: any) => {
-      TagsModule.delOthersVisitedViews(view);
-      TagsModule.delOthersCachedViews(view);
-      this.visible = false;
-      setTimeout(() => resolve({
-        visitedViews: [...TagsModule.visitedViews],
-        cachedViews: [...TagsModule.cachedViews],
-      }), 0);
-    });
-  }
-  delAllViews(view: any) {
-    return new Promise((resolve: any) => {
-      TagsModule.delAllVisitedViews();
-      TagsModule.delAllCachedViews();
-      this.visible = false;
-      setTimeout(() => resolve({
-        visitedViews: [...TagsModule.visitedViews],
-        cachedViews: [...TagsModule.cachedViews],
-      }), 0);
-    });
-  }
-  closeSelectedTag(view: any) {
-    this.delView(view).then((visitedViews: any) => {
-      if (this.isActive(view)) {
-        const latestView = visitedViews.slice(-1)[0];
-        if (latestView) {
-          this.$router.push(latestView.path);
-        } else {
-          this.$router.push('/');
-        }
+  async closeSelectedTag(view: any) {
+    await TagsModule.delVisitedView(view);
+    await TagsModule.delCachedView(view);
+    this.visible = false;
+    const visitedViews = await TagsModule.visitedViews;
+    if (this.isActive(view)) {
+      const latestView = visitedViews.slice(-1)[0];
+      if (latestView) {
+        this.$router.push(latestView.path);
+      } else {
+        this.$router.push('/');
       }
-    });
+    }
   }
-  closeOthersTags() {
+  async closeOthersTags() {
     this.$router.push(this.selectedTag);
-    this.delOthersViews(this.selectedTag).then(() => this.moveToCurrentTag());
+    await TagsModule.delOthersVisitedViews(this.selectedTag);
+    await TagsModule.delOthersCachedViews(this.selectedTag);
+    this.visible = false;
+    this.moveToCurrentTag();
   }
-  closeAllTags() {
-    this.delAllViews({});
+  async closeAllTags() {
+    await TagsModule.delAllVisitedViews();
+    await TagsModule.delAllCachedViews();
+    this.visible = false;
     this.$router.push('/');
   }
   openMenu(tag: any, e: any) {

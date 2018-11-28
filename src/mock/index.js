@@ -4,6 +4,8 @@ import articleAPI from './article'
 import remoteSearchAPI from './remoteSearch'
 import transactionAPI from './transaction'
 
+import router from './routers'
+
 // Mock.setup({
 //   timeout: '350-600'
 // })
@@ -12,6 +14,7 @@ import transactionAPI from './transaction'
 Mock.mock(/\/login\/login/, 'post', loginAPI.loginByUsername)
 Mock.mock('/user/login', 'post', loginAPI.loginByUsername)
 Mock.mock('/user/logout', 'post', loginAPI.logout)
+Mock.mock('/user/router', 'get', router.router)
 Mock.mock(/\/login\/logout/, 'post', loginAPI.logout)
 Mock.mock(/\/user\/info\.*/, 'get', loginAPI.getUserInfo)
 

@@ -18,6 +18,9 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { AppModule } from '@/store/modules/app';
 import SidebarItem from './SidebarItem.vue';
+
+import { RoutersModule } from '@/store/modules/routers';
+
 @Component({
   components: {
     SidebarItem,
@@ -28,7 +31,9 @@ export default class SideBar extends Vue {
     return AppModule.sidebar;
   }
   get routes() {
-    return (this.$router as any).options.routes;
+    // console.log((this.$router as any).options.routes);
+    return RoutersModule.routers;
+    // return (this.$router as any).options.routes;
   }
   get isCollapse() {
     return !this.sidebar.opened;

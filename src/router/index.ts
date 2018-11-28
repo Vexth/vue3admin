@@ -1,8 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Layout from '@/views/layout/Layout.vue';
-
-import AdminRouter from './admin-router';
+// import AdminRouter from './admin-router';
 
 Vue.use(Router);
 
@@ -16,25 +15,40 @@ Vue.use(Router);
                                  if not set, only show with nested mode if there are more than one route under its children
   }
 */
+const publicRouter: any = [
+  {
+    path: '/redirect',
+    component: Layout,
+    meta: {
+      hidden: true,
+    },
+    children: [
+      {
+        path: '/redirect/:path*',
+        component: () => import('@/views/redirect/index.vue'),
+      },
+    ],
+  },
+  // {
+  //   path: '*',
+  //   redirect: '/404',
+  // },
+  {
+    path: '/login',
+    component: () => import('@/views/login/index.vue'),
+  },
+  // {
+  //   path: '/404',
+  //   component: () => import('@/views/404.vue'),
+  // },
+];
 export default new Router({
   // mode: 'history',
   scrollBehavior: () => ({ x: 0, y: 0 }),
   // base: process.env.BASE_URL,
   routes: [
-    {
-      path: '/redirect',
-      component: Layout,
-      meta: {
-        hidden: true,
-      },
-      children: [
-        {
-          path: '/redirect/:path*',
-          component: () => import('@/views/redirect/index.vue'),
-        },
-      ],
-    },
-    ...AdminRouter,
+    ...publicRouter,
+    // ...AdminRouter,
   ],
   /*
   routes: [

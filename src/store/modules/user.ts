@@ -25,16 +25,9 @@ class User extends VuexModule implements IUserState {
   @Action({ commit: 'SET_TOKEN' })
   public async Login(userInfo: { username: string, password: string}) {
     const username = userInfo.username.trim();
-    return new Promise((resolve: any, reject: any) => {
-      login(username, userInfo.password).then((data: any) => {
-        setToken(data.token);
-        resolve();
-      }).catch((res: any) => reject(res));
-    });
-    // const { data } = await login(username, userInfo.password);
-    // console.log(data);
-    // setToken(data.token);
-    // return data.token;
+    const data: any = await login(username, userInfo.password);
+    setToken(data.token);
+    return data.token;
   }
 
   @Action({ commit: 'SET_TOKEN' })
@@ -49,29 +42,16 @@ class User extends VuexModule implements IUserState {
     if (token === undefined) {
       throw Error('GetInfo: token is undefined!');
     }
-    return new Promise((resolve: any, reject: any) => {
-      getInfo(token).then((data: any) => {
-        if (data.roles && data.roles.length > 0) {
-          resolve({
-            roles: data.roles,
-            name: data.name,
-            avatar: data.avatar,
-          });
-        } else {
-          throw Error('GetInfo: roles must be a non-null array!');
-        }
-      }).catch((err: any) => reject(err));
-    });
-    // const { data } = await getInfo(token);
-    // if (data.roles && data.roles.length > 0) {
-    //   return {
-    //     roles: data.roles,
-    //     name: data.name,
-    //     avatar: data.avatar,
-    //   };
-    // } else {
-    //   throw Error('GetInfo: roles must be a non-null array!');
-    // }
+    const data: any = await getInfo(token);
+    if (data.roles && data.roles.length > 0) {
+      return {
+        roles: data.roles,
+        name: data.name,
+        avatar: data.avatar,
+      };
+    } else {
+      throw Error('GetInfo: roles must be a non-null array!');
+    }
   }
 
   @MutationAction({ mutate: [ 'token', 'roles' ] })
@@ -80,20 +60,11 @@ class User extends VuexModule implements IUserState {
       throw Error('LogOut: token is undefined!');
     }
     removeToken();
-    return new Promise((resolve: any, reject: any) => {
-      logout().then(() => {
-        resolve({
-          token: '',
-          roles: [],
-        });
-      }).catch((err: any) => reject(err));
-    });
-    // await logout();
-    // removeToken();
-    // return {
-    //   token: '',
-    //   roles: [],
-    // };
+    await logout();
+    return {
+      token: '',
+      roles: [],
+    };
   }
 }
 
