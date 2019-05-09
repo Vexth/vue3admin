@@ -10,12 +10,28 @@ export interface IUserState {
   roles: string[];
 }
 
-@Module({ dynamic: true, store, name: 'user' })
+@Module({ dynamic: true, store, name: 'user', stateFactory: true })
 class User extends VuexModule implements IUserState {
   public token: string = '';
   public name: string = '';
   public avatar: string = '';
   public roles: string[] = [];
+
+  get Token(): string {
+    return this.token;
+  }
+
+  get Name(): string {
+    return this.name;
+  }
+
+  get Avatar(): string {
+    return this.avatar;
+  }
+
+  get Roles(): string[] {
+    return this.roles;
+  }
 
   @Mutation
   public SET_TOKEN(token: string) {

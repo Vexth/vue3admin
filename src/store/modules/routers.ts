@@ -8,10 +8,18 @@ export interface IRoutersState {
   routers: any[];
 }
 
-@Module({ dynamic: true, store, name: 'routers' })
+@Module({ dynamic: true, store, name: 'routers', stateFactory: true })
 class Routers extends VuexModule implements IRoutersState {
   public routerViews: any = [];
   public routers: any = [];
+
+  get RouterViews(): any[] {
+    return this.routerViews;
+  }
+
+  get Routers(): any[] {
+    return this.routers;
+  }
 
   @Mutation
   public ADD_ROUTER_VIEW(view: any) {
