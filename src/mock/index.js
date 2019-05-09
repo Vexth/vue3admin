@@ -12,9 +12,9 @@ import router from './routers'
 
 // 登录相关
 Mock.mock(/\/login\/login/, 'post', loginAPI.loginByUsername)
-Mock.mock('/user/login', 'post', loginAPI.loginByUsername)
-Mock.mock('/user/logout', 'post', loginAPI.logout)
-Mock.mock('/user/router', 'get', router.router)
+Mock.mock(/\/user\/login/, 'post', loginAPI.loginByUsername)
+Mock.mock(/\/user\/logout/, 'post', loginAPI.logout)
+Mock.mock(/\/user\/router/, 'get', router.router)
 Mock.mock(/\/login\/logout/, 'post', loginAPI.logout)
 Mock.mock(/\/user\/info\.*/, 'get', loginAPI.getUserInfo)
 

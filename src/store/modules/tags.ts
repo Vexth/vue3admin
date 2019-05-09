@@ -6,7 +6,7 @@ export interface ITagsState {
   cachedViews: any[];
 }
 
-@Module({ dynamic: true, store, name: 'tags', stateFactory: true })
+@Module({ dynamic: true, store, name: 'tags' })
 class Tags extends VuexModule implements ITagsState {
   public visitedViews: any = [];
   public cachedViews: any = [];
