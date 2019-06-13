@@ -4,7 +4,7 @@ module.exports = {
   devServer: {
     open: false,
     host: 'localhost',
-    port: 3000,
+    port: 3100,
     https: false,
     hotOnly: false,
     proxy: {
@@ -19,21 +19,21 @@ module.exports = {
     }
   },
   productionSourceMap: false,
-  chainWebpack: config => {
-    config.module
-      .rule('svg')
-      .uses.clear()
-    config.module
-      .rule('svg1')
-      .test(/\.svg$/)
-      .use('svg-sprite')
-      .loader('svg-sprite-loader')
-      .options({
-        symbolId: 'icon-[name]'
-      })
-      .end()
-      .include
-      .add(resolve('src/icons'))
-      .end()
-  },
+  // chainWebpack: config => {
+  //   config.module
+  //     .rule('svg')
+  //     .uses.clear()
+  //   config.module
+  //     .rule('svg1')
+  //     .test(/\.svg$/)
+  //     .use('svg-sprite')
+  //     .loader('svg-sprite-loader')
+  //     .options({
+  //       symbolId: 'icon-[name]'
+  //     })
+  //     .end()
+  //     .include
+  //     .add(resolve('src/icons'))
+  //     .end()
+  // },
 }
