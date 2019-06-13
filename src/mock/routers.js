@@ -16,7 +16,7 @@ const AdminRouter = [
   {
     path: '/example',
     component: 'Layout',
-    redirect: '/example/table',
+    redirect: '/table',
     name: 'Example',
     meta: { title: 'Example', icon: 'example' },
     children: [
@@ -49,7 +49,7 @@ const AdminRouter = [
   {
     path: '/nested',
     component: 'Layout',
-    redirect: '/nested/menu1',
+    redirect: '/menu1',
     name: 'Nested',
     meta: { title: 'Nested', icon: 'nested' },
     children: [

@@ -1,9 +1,23 @@
+<!--
 <template>
   <el-breadcrumb class="app-breadcrumb" separator="/">
     <transition-group name="breadcrumb">
-      <el-breadcrumb-item v-for="(item,index) in levelList" v-if="item.meta.title" :key="item.path">
+      <el-breadcrumb-item v-for="(item,index) in levelList" :key="item.path">
+        <template v-if="item.meta.title">
+          <span v-if="item.redirect==='noredirect'||index==levelList.length-1" class="no-redirect">{{ item.name }}</span>
+          <router-link v-else :to="item.redirect||item.path">{{ item.meta.title }}</router-link>
+        </template>
+      </el-breadcrumb-item>
+    </transition-group>
+  </el-breadcrumb>
+</template>
+-->
+<template>
+  <el-breadcrumb class="app-breadcrumb" separator="/">
+    <transition-group name="breadcrumb">
+      <el-breadcrumb-item v-for="(item,index) in levelList" :key="item.path">
         <span v-if="item.redirect==='noredirect'||index==levelList.length-1" class="no-redirect">{{ item.meta.title }}</span>
-        <router-link v-else :to="item.redirect||item.path">{{ item.meta.title }}</router-link>
+        <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
       </el-breadcrumb-item>
     </transition-group>
   </el-breadcrumb>
@@ -28,20 +42,29 @@ export default class Breadcrumb extends Vue {
   }
 
   getBreadcrumb() {
-    const { params } = this.$route;
-    let matched = this.$route.matched.filter((item) => {
-      if (item.name) {
-        // To solve this problem https://github.com/PanJiaChen/vue-element-admin/issues/561
-        const toPath = pathToRegexp.compile(item.path);
-        item.path = toPath(params);
-        return true;
-      }
-    });
-    const first = matched[0];
-    if (first && first.name !== 'dashboard') {
-      matched = [{ path: '/', meta: { title: 'Dashboard' }} as RouteRecord].concat(matched);
+    // let matched: RouteRecord[] = this.$route.matched.filter((item: RouteRecord) => item.name);
+    // const first: RouteRecord = matched[0];
+    // if (first && (first.name as string).trim().toLocaleLowerCase() !== 'Dashboard'.toLocaleLowerCase()) {
+    //   matched = [{ path: '/dashboard', meta: { title: 'dashboard' }} as RouteRecord].concat(matched);
+    // }
+    const matched: RouteRecord[] = this.$route.matched.filter((item: RouteRecord) => item.name);
+    this.levelList = matched.filter((item: RouteRecord) => item.meta && item.meta.title && item.meta.breadcrumb !== false);
+  }
+
+  handleLink(item: any) {
+    const { redirect, path } = item;
+    if (redirect) {
+      this.$router.push(redirect);
+      return;
     }
-    this.levelList = matched;
+    this.$router.push(this.pathCompile(path));
+  }
+
+  pathCompile(path: any) {
+    // To solve this problem https://github.com/PanJiaChen/vue-element-admin/issues/561
+    const { params } = this.$route;
+    const toPath = pathToRegexp.compile(path);
+    return toPath(params);
   }
 }
 </script>
